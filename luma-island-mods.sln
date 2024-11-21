@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{A95BC4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "movement_speed", "movement_speed\movement_speed.csproj", "{4C8D7381-0CFA-477C-A1D7-F54D9CA72E56}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "quick_start", "quick_start\quick_start.csproj", "{975F4FBB-C400-4082-9F76-62380EBEABA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{4C8D7381-0CFA-477C-A1D7-F54D9CA72E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C8D7381-0CFA-477C-A1D7-F54D9CA72E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C8D7381-0CFA-477C-A1D7-F54D9CA72E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

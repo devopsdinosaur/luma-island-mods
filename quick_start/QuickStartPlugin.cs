@@ -1,22 +1,15 @@
 ﻿using BepInEx;
-using BepInEx.Logging;
-using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
-using Cysharp.Threading.Tasks;
 
 public static class PluginInfo {
 
-    public const string TITLE = "Testing";
-    public const string NAME = "testing";
-    public const string SHORT_DESCRIPTION = "";
+    public const string TITLE = "Quick Start";
+    public const string NAME = "quick_start";
+    public const string SHORT_DESCRIPTION = "Starts the game a few seconds faster by removing the logo animation and jumping straight to the asset loading.  The logo is still shown during the load--because the company deserves the credit!";
 
     public const string VERSION = "0.0.1";
 
@@ -36,7 +29,7 @@ public static class PluginInfo {
 }
 
 [BepInPlugin(PluginInfo.GUID, PluginInfo.TITLE, PluginInfo.VERSION)]
-public class TestingPlugin : DDPlugin {
+public class QuickStartPlugin:DDPlugin {
     private Harmony m_harmony = new Harmony(PluginInfo.GUID);
 
     private void Awake() {
@@ -53,44 +46,13 @@ public class TestingPlugin : DDPlugin {
         }
     }
 
-    /*
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static bool Prefix() {
-			
-			return true;
-		}
-	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static void Postfix() {
-			
-		}
-	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static bool Prefix() {
-			try {
-
-				return false;
-			} catch (Exception e) {
-				logger.LogError("** XXXXX.Prefix ERROR - " + e);
-			}
-			return true;
-		}
-	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static void Postfix() {
-			try {
-				
-			} catch (Exception e) {
-				logger.LogError("** XXXXX.Postfix ERROR - " + e);
-			}
-		}
-	}
-	*/
+    [HarmonyPatch(typeof(LogoTimer), "Start")]
+    class HarmonyPatch_LogoTimer_Start {
+        private static void Postfix(LogoTimer __instance, Animation ___anim) {
+            foreach (AnimationState state in ___anim) {
+                state.speed = 9999;
+            }
+            __instance.clipLength = 0;
+        }
+    }
 }

@@ -67,6 +67,11 @@
       <HintPath>$(ManagedDataPath)\AzureValley.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ManagedDataPath)\UniTask.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ManagedDataPath)\Assembly-CSharp.dll</HintPath>
