@@ -62,6 +62,11 @@
 
   <!-- Add game references -->
   <ItemGroup Label="_Data">
+    <Reference Include="Animancer">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ManagedDataPath)\Animancer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="AzureValley">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ManagedDataPath)\AzureValley.dll</HintPath>
@@ -126,6 +131,11 @@
 
   <!-- Add Unity references -->
   <ItemGroup Label="Unity">
+    <Reference Include="Unity.InputSystem">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ManagedDataPath)\Unity.InputSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(UnityPath)\UnityEngine.dll</HintPath>
