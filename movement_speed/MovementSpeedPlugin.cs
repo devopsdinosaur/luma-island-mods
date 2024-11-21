@@ -12,11 +12,11 @@ using UnityEngine.Events;
 
 public static class PluginInfo {
 
-    public const string TITLE = "Testing";
-    public const string NAME = "testing";
-    public const string SHORT_DESCRIPTION = "For testing purposes only";
+    public const string TITLE = "Movement Speed";
+    public const string NAME = "movement_speed";
+    public const string SHORT_DESCRIPTION = "Adds a configurable multiplier to increase movement speed.";
 
-    public const string VERSION = "0.0.0";
+    public const string VERSION = "0.0.1";
 
     public const string AUTHOR = "devopsdinosaur";
     public const string GAME_TITLE = "Luma Island";
@@ -34,15 +34,16 @@ public static class PluginInfo {
 }
 
 [BepInPlugin(PluginInfo.GUID, PluginInfo.TITLE, PluginInfo.VERSION)]
-public class TestingPlugin : DDPlugin {
+public class MovementSpeedPlugin : DDPlugin {
     private Harmony m_harmony = new Harmony(PluginInfo.GUID);
+    private static float m_prev_multiplier = -1;
 
     private void Awake() {
         logger = this.Logger;
         try {
             this.m_plugin_info = PluginInfo.to_dict();
             Settings.Instance.load(this);
-            DDPlugin.set_log_level(LogLevel.Debug);
+            DDPlugin.set_log_level(Settings.m_log_level.Value);
             this.create_nexus_page();
             this.m_harmony.PatchAll();
             logger.LogInfo($"{PluginInfo.GUID} v{PluginInfo.VERSION} loaded.");
@@ -51,53 +52,18 @@ public class TestingPlugin : DDPlugin {
         }
     }
 
-    [HarmonyPatch(typeof(MainMenuTitleTimer), "Update")]
-    class HarmonyPatch_ {
-        private static bool Prefix(MainMenuTitleTimer __instance) {
-            __instance.logoTimer = 99999f;
-            _debug_log($"clipLength: {__instance.clipLength}, timer: {__instance.logoTimer}");
+    [HarmonyPatch(typeof(PlayerMovementSpeed), "Update")]
+    class HarmonyPatch_PlayerMovementSpeed_Update {
+        private static bool Prefix(ref float ___m_defaultMovementSpeed) {
+        	try {
+				if (Settings.m_enabled.Value && Settings.m_speed_multiplier.Value > 0 && Settings.m_speed_multiplier.Value != m_prev_multiplier) {
+                    ___m_defaultMovementSpeed *= (m_prev_multiplier = Settings.m_speed_multiplier.Value);
+                }
+                return true;
+			} catch (Exception e) {
+				logger.LogError("** HarmonyPatch_PlayerMovementSpeed_Update.Prefix ERROR - " + e);
+			}
             return true;
-        }
-    }
-
-    /*
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static bool Prefix() {
-			
-			return true;
 		}
 	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static void Postfix() {
-			
-		}
-	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static bool Prefix() {
-			try {
-
-				return false;
-			} catch (Exception e) {
-				logger.LogError("** XXXXX.Prefix ERROR - " + e);
-			}
-			return true;
-		}
-	}
-
-	[HarmonyPatch(typeof(), "")]
-	class HarmonyPatch_ {
-		private static void Postfix() {
-			try {
-				
-			} catch (Exception e) {
-				logger.LogError("** XXXXX.Postfix ERROR - " + e);
-			}
-		}
-	}
-	*/
 }

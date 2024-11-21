@@ -62,6 +62,11 @@
 
   <!-- Add game references -->
   <ItemGroup Label="_Data">
+    <Reference Include="AzureValley">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ManagedDataPath)\AzureValley.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(ManagedDataPath)\Assembly-CSharp.dll</HintPath>
