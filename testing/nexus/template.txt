@@ -18,6 +18,7 @@ See the config options below for a complete list of features and how to use them
 [*]Once you have the settings you want, start the game again and enjoy!
 [/list]
 
+[[hotkeys]]
 [size=4][b][u]Config Options[/u][/b][/size]
 
 Note that all of the options in this mod default to off (false, zero, blank, etc) to enable the user to have as little of a "cheaty" experience as possible. 

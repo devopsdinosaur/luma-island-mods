@@ -33,6 +33,6 @@ public class Settings {
         m_hold_key_to_sprint = this.m_plugin.Config.Bind<bool>("General", "Hold Sprint Key", true, "Set to false to cause sprint key to toggle sprint status.");
 
         // Hotkeys
-        m_hotkey_sprint = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Sprint", "LeftShift,RightShift", "Comma-separated list of Unity Keycodes, any of which will cause player to sprint (either toggle or held, depending on value of 'Hold Sprint Key' setting).");
+        m_hotkey_sprint = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Sprint", "/Keyboard/leftShift", "Comma-separated list of Unity 'Control Paths', any of which will cause player to sprint (either toggle or held, depending on value of 'Hold Sprint Key' setting).  Set the 'Log Level' setting to 'debug', reload the game, and open LogOutput.log to see a full list of available 'control path' values to use for key bindings.  Changing this value requires a game reload.");
     }
 }

@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "movement_speed", "movement_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "quick_start", "quick_start\quick_start.csproj", "{975F4FBB-C400-4082-9F76-62380EBEABA0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "time_management", "time_management\time_management.csproj", "{2D2C45C4-7955-483F-982A-B88EA713F811}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{975F4FBB-C400-4082-9F76-62380EBEABA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2C45C4-7955-483F-982A-B88EA713F811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2C45C4-7955-483F-982A-B88EA713F811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2C45C4-7955-483F-982A-B88EA713F811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2C45C4-7955-483F-982A-B88EA713F811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
