@@ -359,6 +359,16 @@ public static class ReflectionUtils {
         return get_method(obj, name, type)?.Invoke(obj, (_params == null ? new object[] { } : _params));
     }
 
+    public static void raise_event<TEventArgs>(object obj, string name, TEventArgs args, Type type = null) where TEventArgs : EventArgs {
+        MulticastDelegate event_delegate = (MulticastDelegate) get_field_value(obj, name, type);
+        if (event_delegate == null) {
+            return;
+        }
+        foreach (Delegate handler in event_delegate.GetInvocationList()) {
+            handler.Method.Invoke(handler.Target, new object[] {obj, args});
+        }
+    }
+
     public class EnumerateListEntriesCallbackParams {
         private object list;
         private int index;

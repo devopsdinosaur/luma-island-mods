@@ -13,7 +13,7 @@ public static class PluginInfo {
     public const string NAME = "time_management";
     public const string SHORT_DESCRIPTION = "Slow down, speed up, stop, and even reverse time using configurable hotkeys.";
 
-    public const string VERSION = "0.0.1";
+    public const string VERSION = "0.0.2";
 
     public const string AUTHOR = "devopsdinosaur";
     public const string GAME_TITLE = "Luma Island";
@@ -108,19 +108,19 @@ public class TimeManagementPlugin : DDPlugin {
                 _info_log($"\n\n-- All Currently Available Input Control Paths on this System --\n\n{String.Join("\n", available_paths)}\n");
                 add_hotkey_action(___m_input, "time_stop", Settings.m_hotkey_time_stop_toggle.Value, performed: context => {
                     Settings.m_is_time_stopped.Value = !Settings.m_is_time_stopped.Value;
-                    //_debug_log($"Time stop hotkey pressed - is_time_stopped: {Settings.m_is_time_stopped.Value}");
+                    _debug_log($"Time STOP button pressed (stopped: {Settings.m_is_time_stopped.Value}");
                 });
                 add_hotkey_action(___m_input, "time_speed_up", Settings.m_hotkey_time_speed_up.Value, performed: context => {
-                    //_debug_log($"Time speed up hotkey pressed");
                     Settings.m_time_speed.Value += Settings.m_time_speed_delta.Value;
+                    _debug_log($"Time SPEED UP button pressed");
                 });
                 add_hotkey_action(___m_input, "time_speed_down", Settings.m_hotkey_time_speed_down.Value, performed: context => {
-                    //_debug_log($"Time speed down hotkey pressed");
                     Settings.m_time_speed.Value -= Settings.m_time_speed_delta.Value;
+                    _debug_log($"Time SPEED DOWN button pressed");
                 });
                 add_hotkey_action(___m_input, "time_speed_reverse", Settings.m_hotkey_time_speed_reverse.Value, performed: context => {
-                    //_debug_log($"Time speed reverse hotkey pressed");
                     Settings.m_time_speed.Value *= -1;
+                    _debug_log($"Time SPEED REVERSE button pressed");
                 });
             } catch (Exception e) {
                 logger.LogError("** HarmonyPatch_LocalPlayerController_Initialize.Prefix ERROR - " + e);
@@ -130,14 +130,52 @@ public class TimeManagementPlugin : DDPlugin {
 
     [HarmonyPatch(typeof(GameState), "DuringDay_Update")]
     class HarmonyPatch_GameState_DuringDay_Update {
-        private static bool Prefix(GameState __instance) {
+        private static bool Prefix(GameState __instance, ref float ___secondAcc) {
             try {
                 if (!Settings.m_enabled.Value) {
                     return true;
                 }
+                if (__instance.FreezeTime) {
+                    return false;
+                }
+                bool flag = true;
+                foreach (PlayerController activePlayer in PlayersManager.Instance.ActivePlayers) {
+                    if (activePlayer.Level != null && activePlayer.Level.StaticData.m_passTime) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    return false;
+                }
                 __instance.m_timeScale = (Settings.m_is_time_stopped.Value ? 0 : Settings.m_time_speed.Value);
                 m_time_scale_text.text = $"({Settings.m_time_speed.Value:#0.0} gs/rts{(Settings.m_is_time_stopped.Value ? " |STOPPED|" : "")})";
-                return true;
+                __instance.EndOfDayInvulnerabilityTimer.Tick();
+                ___secondAcc += __instance.m_timeScale * Time.deltaTime;
+                float num = Mathf.Floor(___secondAcc);
+                ___secondAcc -= num;
+                int hours = __instance.TimeOfDay.Hours;
+                TimeSpan new_time = TimeSpan.Zero;
+                try {
+                    new_time = __instance.TimeOfDay + new TimeSpan(0, 0, (int) num);
+                } catch {}
+                if (new_time <= TimeSpan.Zero) { 
+                    new_time = TimeSpan.Zero;
+                    ___secondAcc = 0f;
+                }
+                __instance.TimeOfDay = new_time;
+                if (__instance.TimeOfDay.Hours != hours) {
+                    //_debug_log($"{__instance.TimeOfDay.Hours} {hours}");
+                    Action<int> action = (Action<int>) ReflectionUtils.get_field_value(__instance, "TimeOfDayOnHourChanged");
+                    action += delegate (int value) {
+                    };
+                    action.Invoke(__instance.TimeOfDay.Hours);
+                }
+                if (__instance.TimeOfDay.Ticks >= __instance.EndOfDay.Ticks && Network.IsHost && ((bool) ReflectionUtils.invoke_method(__instance, "CanLocalPlayerEndDay"))) {
+                    __instance.TimeOfDay = __instance.EndOfDay;
+                    __instance.EndDay();
+                }
+                return false;
             } catch (Exception e) {
                 logger.LogError("** HarmonyPatch_GameState_DuringDay_Update.Prefix ERROR - " + e);
             }
