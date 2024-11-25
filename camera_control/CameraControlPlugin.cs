@@ -10,9 +10,9 @@ public static class PluginInfo {
 
     public const string TITLE = "Camera Control";
     public const string NAME = "camera_control";
-    public const string SHORT_DESCRIPTION = "Add more control to the camera.  Zoom the camera in and out as far as you want using configurable hotkeys and allow the camera to drop completely to the ground for much better viewing!  First-person mode coming soon.";
+    public const string SHORT_DESCRIPTION = "Add more control to the camera.  Remove the camera fog/haze and zoom in and out as far as you want using configurable hotkeys and allow the camera to drop completely to the ground for much better viewing!  First-person mode coming soon.";
 
-    public const string VERSION = "0.0.2";
+    public const string VERSION = "0.0.3";
 
     public const string AUTHOR = "devopsdinosaur";
     public const string GAME_TITLE = "Luma Island";
@@ -85,6 +85,7 @@ public class TestingPlugin : DDPlugin {
                 }
                 __instance.m_distance = Settings.m_camera_distance.Value;
                 __instance.m_minPitch = Settings.m_min_camera_pitch.Value;
+                RenderSettings.fog = !Settings.m_disable_fog.Value;
 			    return true;
             } catch (Exception e) {
                 logger.LogError("** HarmonyPatch_TopDownTrackingCamera_Update.Prefix ERROR - " + e);
