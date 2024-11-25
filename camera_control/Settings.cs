@@ -15,16 +15,15 @@ public class Settings {
     // General
     public static ConfigEntry<bool> m_enabled;
     public static ConfigEntry<string> m_log_level;
-    public static ConfigEntry<float> m_time_speed;
-    public static ConfigEntry<float> m_time_speed_delta;
-    public static ConfigEntry<bool> m_is_time_stopped;
+    public static ConfigEntry<float> m_camera_distance;
+    public static ConfigEntry<float> m_camera_zoom_delta;
+    public static ConfigEntry<float> m_min_camera_pitch;
 
     // Hotkeys
     public static ConfigEntry<string> m_hotkey_modifier;
-    public static ConfigEntry<string> m_hotkey_time_stop_toggle;
-    public static ConfigEntry<string> m_hotkey_time_speed_up;
-    public static ConfigEntry<string> m_hotkey_time_speed_down;
-    public static ConfigEntry<string> m_hotkey_time_speed_reverse;
+    public static ConfigEntry<string> m_hotkey_camera_zoom_in;
+    public static ConfigEntry<string> m_hotkey_camera_zoom_out;
+    public static ConfigEntry<string> m_hotkey_camera_zoom_reset;
 
     private string hotkey_description(string unique) {
         const bool IS_MODIFIER_AVAILABLE = true;
@@ -37,15 +36,14 @@ public class Settings {
         // General
         m_enabled = this.m_plugin.Config.Bind<bool>("General", "Enabled", true, "Set to false to disable this mod.");
         m_log_level = this.m_plugin.Config.Bind<string>("General", "Log Level", "info", "[Advanced] Logging level, one of: 'none' (no logging), 'error' (only errors), 'warn' (errors and warnings), 'info' (normal logging), 'debug' (extra log messages for debugging issues).  Not case sensitive [string, default info].  Debug level not recommended unless you're noticing issues with the mod.  Changes to this setting require an application restart.");
-        m_time_speed = this.m_plugin.Config.Bind<float>("General", "Initial Time Scale", 60.0f, "Initial time scale [in game seconds for every real-time second] (float, default 60 [game default, i.e. one game minute for every realtime second]).  Use configured hotkeys to increase/reduce this number, reduce below zero to reverse time.");
-        m_time_speed_delta = this.m_plugin.Config.Bind<float>("General", "Time Scale Delta", 10f, "Change in time scale with each up/down hotkey tick (float, default 0.25).");
-        m_is_time_stopped = this.m_plugin.Config.Bind<bool>("General", "Is Time Stopped", false, "This value will be used to determine if clock starts immediately when loading.  It is toggled using the Time Start/Stop Hotkey.");
+        m_camera_distance = this.m_plugin.Config.Bind<float>("General", "Camera - Distance", 16.0f, "Distance between camera and player (float, default 16 [game default]).  Use configured hotkeys to increase/reduce this number.");
+        m_camera_zoom_delta = this.m_plugin.Config.Bind<float>("General", "Camera - Zoom Delta", 0.5f, "The change in camera distance (forward/back) with each hotkey press (float, default 0.5).");
+        m_min_camera_pitch = this.m_plugin.Config.Bind<float>("General", "Camera - Minimum Pitch", -45f, "The angle in degrees (from player toward the ground) at which the camera will stop.  Set to a lower number to allow for more range of motion.  Numbers below -45 (the default value) will sometimes allow the camera (at sufficient velocity) to clip below ground objects, but it will correct itself quickly and will not cause game issues.");
 
         // Hotkeys
         m_hotkey_modifier = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Modifier", "/Keyboard/leftCtrl,/Keyboard/rightCtrl", hotkey_description(null));
-        m_hotkey_time_stop_toggle = this.m_plugin.Config.Bind<string>("Hotkeys", "Time Start/Stop Toggle Hotkey", "/Keyboard/0,/Keyboard/numpad0", hotkey_description("toggle the passage of time"));
-        m_hotkey_time_speed_up = this.m_plugin.Config.Bind<string>("Hotkeys", "Time Scale Increment Hotkey", "/Keyboard/equals,/Keyboard/numpadPlus", hotkey_description("increase time speed"));
-        m_hotkey_time_speed_down = this.m_plugin.Config.Bind<string>("Hotkeys", "Time Scale Decrement Hotkey", "/Keyboard/minus,/Keyboard/numpadMinus", hotkey_description("decrease time speed"));
-        m_hotkey_time_speed_reverse = this.m_plugin.Config.Bind<string>("Hotkeys", "Time Scale Reverse Hotkey", "/Keyboard/9,/Keyboard/numpad9", hotkey_description("reverse time direction (negative/positive)"));
+        m_hotkey_camera_zoom_in = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom In", "/Mouse/scroll/up", hotkey_description("move the camera closer to the player"));
+        m_hotkey_camera_zoom_out = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom Out", "/Mouse/scroll/down", hotkey_description("move the camera farther away from the player"));
+        m_hotkey_camera_zoom_reset = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom Reset", "/Mouse/scroll/middleButton", hotkey_description("reset the camera to the game default position (16)"));
     }
 }

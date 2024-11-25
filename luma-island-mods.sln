@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "quick_start", "quick_start\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "time_management", "time_management\time_management.csproj", "{2D2C45C4-7955-483F-982A-B88EA713F811}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "camera_control", "camera_control\camera_control.csproj", "{7B025085-8F38-4484-B798-A51AA2F55CB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{2D2C45C4-7955-483F-982A-B88EA713F811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D2C45C4-7955-483F-982A-B88EA713F811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D2C45C4-7955-483F-982A-B88EA713F811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -19,6 +19,11 @@ public class Settings {
     public static ConfigEntry<float> m_sprint_speed_multiplier;
     public static ConfigEntry<bool> m_hold_key_to_sprint;
 
+    private string hotkey_description(string unique) {
+        const bool IS_MODIFIER_AVAILABLE = false;
+        return $"Comma-separated list of Unity key 'control paths', any of which will {(unique == null ? "act as the special modifier key (i.e. alt/ctrl/shift) required to be pressed along with other hotkeys" : (IS_MODIFIER_AVAILABLE ? "(when combined with the Modifier key) " : " ") + unique)}.  Check the <game-root>/BepInEx/config/available_control_paths.txt for a full list of control path values available on your system.  Changing any hotkey requires a game reload.";
+    }
+
     // Hotkeys
     public static ConfigEntry<string> m_hotkey_sprint;
 
@@ -33,6 +38,7 @@ public class Settings {
         m_hold_key_to_sprint = this.m_plugin.Config.Bind<bool>("General", "Hold Sprint Key", true, "Set to false to cause sprint key to toggle sprint status.");
 
         // Hotkeys
-        m_hotkey_sprint = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Sprint", "/Keyboard/leftShift", "Comma-separated list of Unity 'Control Paths', any of which will cause player to sprint (either toggle or held, depending on value of 'Hold Sprint Key' setting).  Set the 'Log Level' setting to 'debug', reload the game, and open LogOutput.log to see a full list of available 'control path' values to use for key bindings.  Changing this value requires a game reload.");
+        UnityUtils.dump_control_paths();
+        m_hotkey_sprint = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Sprint", "/Keyboard/leftShift", hotkey_description("cause player to sprint (either toggle or held, depending on value of 'Hold Sprint Key' setting)"));
     }
 }

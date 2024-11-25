@@ -5,10 +5,12 @@ using UnityEngine;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Configuration;
+using HarmonyLib;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices.WindowsRuntime;
 
@@ -135,6 +137,99 @@ public abstract class DDPlugin : BaseUnityPlugin {
 }
 
 public static class UnityUtils {
+
+    public static void dump_control_paths(string output_path = null) {
+        try {
+            if (output_path == null) {
+                output_path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "config", "available_control_paths.txt");
+            }
+            List<string> available_paths = new List<string>();
+            foreach (InputDevice device in InputSystem.devices) {
+                foreach (InputControl control in device.allControls) {
+                    available_paths.Add(control.path);
+                }
+            }
+            if (available_paths.Count == 0) {
+                return;
+            }
+            File.WriteAllText(output_path, 
+@$"#
+# This is a list of all currently available input control paths on this system.
+# Use these as hotkey values in mods.  You should see Keyboard and Mouse entries
+# by default (probably different on Steam Deck?) and any available controllers
+# or other peripherals.  Use these exact values in your mod config.  Let
+# devopsdinosaur know (on Nexus or Discord or GitHub [make an issue ticket])
+# if you're sure you're entering it correctly and the key is not working.
+# Be sure to include your config info in the ticket/message.
+# 
+# Enjoy the mods! -- dd
+#
+# == All Currently Available Control Paths on this System ==
+#
+{String.Join("\n", available_paths)}");
+        } catch (Exception e) {
+            DDPlugin._error_log($"** dump_control_paths WARNING - unable to dump control path information to '{output_path}'.  Error: " + e);
+        }
+    }
+
+    public static InputAction[] add_hotkey_action(PlayerInput player_input, string name, string modifier_keys, string action_keys, Action<InputAction.CallbackContext> started = null, Action<InputAction.CallbackContext> performed = null, Action<InputAction.CallbackContext> canceled = null) {
+        List<InputAction> actions = new List<InputAction>();
+        int total_binding_count = 0;
+        string[] modifier_paths = modifier_keys.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        if (modifier_paths.Length == 0) {
+            modifier_paths = new string[] { "<<NONE>>" };
+        }
+        int counter = 0;
+        for (;; counter++) {
+            string action_name = $"{name}_{counter:D3}";
+            if (player_input.actions.FindAction(action_name) == null) {
+                break;
+            }
+            player_input.actions.RemoveAction(action_name);
+            DDPlugin._debug_log($"Removed existing '{action_name}' action");
+        }
+        counter = 0;
+        foreach (string modifier_path in modifier_paths) {
+            string action_name = $"{name}_{counter:D3}";
+            InputAction action = new InputAction(action_name);
+            int binding_count = 0;
+            foreach (string action_path in action_keys.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) {
+                try {
+                    if (modifier_path == "<<NONE>>") {
+                        action.AddBinding(action_path);
+                    } else {
+                        action.AddCompositeBinding("OneModifier").With("Modifier", modifier_path).With("Binding", action_path);
+                    }
+                    binding_count++;
+                } catch {
+                    DDPlugin._warn_log($"** add_hotkey_action WARNING - unable to bind '{name}' action to hotkey (modifier: '{modifier_path}', key: '{action_path}).");
+                    continue;
+                }
+            }
+            if (binding_count == 0) {
+                continue;
+            }
+            total_binding_count += binding_count;
+            if (started != null) {
+                action.started += started;
+            }
+            if (performed != null) {
+                action.performed += performed;
+            }
+            if (canceled != null) {
+                action.canceled += canceled;
+            }
+            action.Enable();
+            player_input.actions.AddItem(action);
+            DDPlugin._debug_log($"Added '{action_name}' action.");
+            actions.Add(action);
+            counter++;
+        }
+        if (total_binding_count == 0) {
+            DDPlugin._warn_log($"** add_hotkey_action WARNING - '{name}' action has no valid keybindings.");
+        }
+        return actions.ToArray();
+    }
 
     public static bool list_descendants(Transform parent, Func<Transform, bool> callback, int indent, Action<object> log_method) {
         Transform child;
