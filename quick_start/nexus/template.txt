@@ -1,16 +1,22 @@
 ﻿
 [size=4][b][u]Description[/u][/b][/size]
 
+[url=https://github.com/[[author]]/[[repo]]/blob/master/[[name]]/changelog.md]Changelog[/url]
+
 [[short_description]]
 
-[url=https://github.com/[[author]]/[[repo]]/blob/master/[[name]]/changelog.md]Changelog[/url]
+Before you download, please consider a small tip (any amount) for the author.  Modding is a labor of love, but it is a lot of work.
+[url=https://ko-fi.com/devopsdinosaur][img]https://i.imgur.com/OXbxOhk.png[/img][/url]
+Any tips go directly to gifts for my kids and wife (helps reassure them that I'm not wasting my time with modding =P).  
+Thanks!
+dd
 
 See the config options below for a complete list of features and how to use them.  If you have ideas or issues see the [i]Source Code and Bug Reporting[/i] section at the bottom of the page.  Thanks!
 
 [size=4][b][u]Installation[/u][/b][/size]
 
 [list=1]
-[*][url=https://www.nexusmods.com/lumaisland/mods/7]Install BepInEx[/url]﻿
+[*][url=https://www.nexusmods.com/yetanotherzombiesurvivors/mods/7]Install BepInEx[/url]
 [*]Download and extract this mod.
 [*]Copy the extracted files to [i]<[[game]]-home>/BepInEx/plugins[/i] folder.
 [*]Start the game and exit.
@@ -18,6 +24,7 @@ See the config options below for a complete list of features and how to use them
 [*]Once you have the settings you want, start the game again and enjoy!
 [/list]
 
+[[hotkeys]]
 [size=4][b][u]Config Options[/u][/b][/size]
 
 Note that all of the options in this mod default to off (false, zero, blank, etc) to enable the user to have as little of a "cheaty" experience as possible. 
@@ -40,10 +47,3 @@ To edit the config file outside of the game:
 
 All of my mods are open source on GitHub here: [url=https://github.com/[[author]]/[[repo]]]https://github.com/[[author]]/[[repo]][/url]
 Please let me know in the Posts section if you have problems or ideas for new mods/features.  Or, even better, you can submit issues directly on the GitHub page [url=https://github.com/[[author]]/[[repo]]/issues]here[/url]).
-
-[b]PSA[/b] - It's been hard to find the time to create new mods and support the ones I've made.  If you like my mods, please consider a small tip (any amount) on Ko-fi to help me convince my wife that this modding stuff is worth my time =)  Just scan the QR code below with your phone or click it to get started.
-
-[url=https://ko-fi.com/devopsdinosaur/][img]https://i.ibb.co/5cYLp2z/kofi-donate-qrcode.png[/img][/url]
-
-Thanks a ton, and enjoy the mods!!
-dd

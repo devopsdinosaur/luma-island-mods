@@ -19,12 +19,18 @@ public class Settings {
     public static ConfigEntry<float> m_camera_zoom_delta;
     public static ConfigEntry<float> m_min_camera_pitch;
     public static ConfigEntry<bool> m_disable_fog;
+    public static ConfigEntry<bool> m_disable_automatic_pitch_correction;
+    public static ConfigEntry<float> m_camera_lookat_y_offset;
+    public static ConfigEntry<float> m_camera_lookat_delta;
 
     // Hotkeys
     public static ConfigEntry<string> m_hotkey_modifier;
     public static ConfigEntry<string> m_hotkey_camera_zoom_in;
     public static ConfigEntry<string> m_hotkey_camera_zoom_out;
     public static ConfigEntry<string> m_hotkey_camera_zoom_reset;
+    public static ConfigEntry<string> m_hotkey_camera_look_y_up;
+    public static ConfigEntry<string> m_hotkey_camera_look_y_down;
+    public static ConfigEntry<string> m_hotkey_camera_look_reset;
 
     private string hotkey_description(string unique) {
         const bool IS_MODIFIER_AVAILABLE = true;
@@ -41,11 +47,17 @@ public class Settings {
         m_camera_zoom_delta = this.m_plugin.Config.Bind<float>("General", "Camera - Zoom Delta", 0.5f, "The change in camera distance (forward/back) with each hotkey press (float, default 0.5).");
         m_min_camera_pitch = this.m_plugin.Config.Bind<float>("General", "Camera - Minimum Pitch", -45f, "The angle in degrees (from player toward the ground) at which the camera will stop.  Set to a lower number to allow for more range of motion.  Numbers below -45 (the default value) will sometimes allow the camera (at sufficient velocity) to clip below ground objects, but it will correct itself quickly and will not cause game issues.");
         m_disable_fog = this.m_plugin.Config.Bind<bool>("General", "Camera - Disable Fog", true, "Removes the distance-based hazing/blurring effect.  This game has relatively low object density, so removing the Unity fog should not cause issues on most systems, even when zooming way out.  Set this to false to re-enable the fog effect if you notice framerate issues.");
+        m_disable_automatic_pitch_correction = this.m_plugin.Config.Bind<bool>("General", "Camera - Disable Automatic Pitch Correction", true, "Removes the annoying up/down drift of the camera to a specific angle when zooming in and out.  Defaults to true.");
+        m_camera_lookat_y_offset = this.m_plugin.Config.Bind<float>("General", "Camera - Look Y-Axis Offset", 0f, "Offset distance along the y (up/down) axis to change the point at which the camera 'looks' (float, default 0 [game default, looking at player's feet]).  Use configured hotkeys to increase/reduce this number.");
+        m_camera_lookat_delta = this.m_plugin.Config.Bind<float>("General", "Camera - Look Delta", 0.1f, "The change in camera look point (up/down) with each keypress.");
 
         // Hotkeys
         m_hotkey_modifier = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Modifier", "/Keyboard/leftCtrl,/Keyboard/rightCtrl", hotkey_description(null));
         m_hotkey_camera_zoom_in = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom In", "/Mouse/scroll/up", hotkey_description("move the camera closer to the player"));
         m_hotkey_camera_zoom_out = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom Out", "/Mouse/scroll/down", hotkey_description("move the camera farther away from the player"));
         m_hotkey_camera_zoom_reset = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Zoom Reset", "/Mouse/scroll/middleButton", hotkey_description("reset the camera to the game default position (16)"));
+        m_hotkey_camera_look_y_up = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Look Up", "/Keyboard/pageUp", hotkey_description("move the camera 'look at' position up along the y axis"));
+        m_hotkey_camera_look_y_down = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Look Down", "/Keyboard/pageDown", hotkey_description("move the camera 'look at' position down along the y axis"));
+        m_hotkey_camera_look_reset = this.m_plugin.Config.Bind<string>("Hotkeys", "Hotkey - Camera Look Reset", "/Keyboard/home", hotkey_description("reset the camera 'look at' position (0)"));
     }
 }

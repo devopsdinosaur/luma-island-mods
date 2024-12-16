@@ -7,11 +7,11 @@ using UnityEngine;
 
 public static class PluginInfo {
 
-    public const string TITLE = "Quick Start";
-    public const string NAME = "quick_start";
-    public const string SHORT_DESCRIPTION = "Removes the annoying character stretch on first load.  Starts the game a few seconds faster by removing the logo animation and jumping straight to the asset loading.  The logo is still shown during the load--because the company deserves the credit!";
+    public const string TITLE = "Pickup Radius";
+    public const string NAME = "pickup_radius";
+    public const string SHORT_DESCRIPTION = "Adds the ability to adjust the player's magnetic pickup radius using a configurable setting.";
 
-    public const string VERSION = "0.0.2";
+    public const string VERSION = "0.0.1";
 
     public const string AUTHOR = "devopsdinosaur";
     public const string GAME_TITLE = "Luma Island";
@@ -29,7 +29,7 @@ public static class PluginInfo {
 }
 
 [BepInPlugin(PluginInfo.GUID, PluginInfo.TITLE, PluginInfo.VERSION)]
-public class QuickStartPlugin:DDPlugin {
+public class PickupRadiusPlugin : DDPlugin {
     private Harmony m_harmony = new Harmony(PluginInfo.GUID);
 
     private void Awake() {
@@ -46,26 +46,25 @@ public class QuickStartPlugin:DDPlugin {
         }
     }
 
-    [HarmonyPatch(typeof(LogoTimer), "Start")]
-    class HarmonyPatch_LogoTimer_Start {
-        private static void Postfix(LogoTimer __instance, Animation ___anim) {
-            if (!Settings.m_enabled.Value) {
-                return;
+    [HarmonyPatch(typeof(PlayerMagneticLootCollector), "PerformLootCheck")]
+	class HarmonyPatch_PlayerMagneticLootCollector_PerformLootCheck {
+		private static bool Prefix(PlayerMagneticLootCollector __instance, int ___m_lootLayer) {
+			try {
+                if (!Settings.m_enabled.Value) {
+                    return true;
+                }
+                Collider[] array = Physics.OverlapSphere(__instance.transform.position, Settings.m_pickup_radius.Value, ___m_lootLayer);
+		        for (int i = 0; i < array.Length; i++) {
+			        MagneticLoot component = array[i].gameObject.GetComponent<MagneticLoot>();
+			        if (component != null && component.IsPickupable && component.AvailableToPickup) {
+				        component.OnPlayerNearby(__instance.Player);
+			        }
+		        }
+                return false;
+            } catch (Exception e) {
+                _error_log("** HarmonyPatch_PlayerMagneticLootCollector_PerformLootCheck ERROR - " + e);
             }
-            foreach (AnimationState state in ___anim) {
-                state.speed = 9999;
-            }
-            __instance.clipLength = 0;
-        }
-    }
-
-    [HarmonyPatch(typeof(LocalPawn), "TriggerAnimation")]
-    class HarmonyPatch_LocalPawn_TriggerAnimation {
-        private static bool Prefix(string name) {
-            if (!Settings.m_enabled.Value) {
-                return true;
-            }
-            return name != "Stretch";
-        }
-    }
+			return true;
+		}
+	}
 }

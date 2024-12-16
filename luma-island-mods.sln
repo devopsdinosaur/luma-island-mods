@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "time_management", "time_man
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "camera_control", "camera_control\camera_control.csproj", "{7B025085-8F38-4484-B798-A51AA2F55CB1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pickup_radius", "pickup_radius\pickup_radius.csproj", "{BE7E2330-E846-4FE9-B079-6AAB6512159B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B025085-8F38-4484-B798-A51AA2F55CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE7E2330-E846-4FE9-B079-6AAB6512159B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE7E2330-E846-4FE9-B079-6AAB6512159B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE7E2330-E846-4FE9-B079-6AAB6512159B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE7E2330-E846-4FE9-B079-6AAB6512159B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

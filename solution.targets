@@ -136,6 +136,11 @@
       <HintPath>$(ManagedDataPath)\Unity.InputSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.Mathematics">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(ManagedDataPath)\Unity.Mathematics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(UnityPath)\UnityEngine.dll</HintPath>
