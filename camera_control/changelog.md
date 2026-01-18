@@ -1,4 +1,7 @@
-﻿# 0.0.6
+﻿# 0.0.7
+- Updated for latest game version.
+
+# 0.0.6
 ## Features
 - Added settings and hotkeys for changing the camera's "look" angle
 

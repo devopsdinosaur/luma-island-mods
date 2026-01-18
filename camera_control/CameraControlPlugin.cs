@@ -13,7 +13,7 @@ public static class PluginInfo {
     public const string NAME = "camera_control";
     public const string SHORT_DESCRIPTION = "Add more control to the camera.  Remove the camera fog/haze and zoom in and out as far as you want using configurable hotkeys and allow the camera to drop completely to the ground for much better viewing!  First-person mode coming soon.";
 
-    public const string VERSION = "0.0.6";
+    public const string VERSION = "0.0.7";
 
     public const string AUTHOR = "devopsdinosaur";
     public const string GAME_TITLE = "Luma Island";
@@ -120,7 +120,7 @@ public class TestingPlugin : DDPlugin {
             return true;
         }
 
-        private static void Postfix(TopDownTrackingCamera __instance, float3 ___m_animatedOffset, float3 ___focusSmooth, Timer ___m_shakeTimer, AnimationCurve ___m_shakeOffsetX, AnimationCurve ___m_shakeOffsetZ) {
+        private static void Postfix(TopDownTrackingCamera __instance, float3 ___m_animatedOffset, float3 ___m_focusSmooth, Timer ___m_shakeTimer, AnimationCurve ___m_shakeOffsetX, AnimationCurve ___m_shakeOffsetZ) {
             try {
                 if (!Settings.m_enabled.Value) {
                     return;
@@ -131,7 +131,7 @@ public class TestingPlugin : DDPlugin {
                     float time = ___m_shakeTimer.duration - ___m_shakeTimer.GetRemainingTime();
                     offset = __instance.transform.rotation * new Vector3(___m_shakeOffsetX.Evaluate(time), ___m_shakeOffsetZ.Evaluate(time), 0f);
                 }
-                __instance.transform.LookAt(___m_animatedOffset + ___focusSmooth + offset + (float3) (Vector3.up * Settings.m_camera_lookat_y_offset.Value), Vector3.up);
+                __instance.transform.LookAt(___m_animatedOffset + ___m_focusSmooth + offset + (float3) (Vector3.up * Settings.m_camera_lookat_y_offset.Value), Vector3.up);
             } catch (Exception e) {
                 logger.LogError("** HarmonyPatch_TopDownTrackingCamera_Update.Postfix ERROR - " + e);
             }
